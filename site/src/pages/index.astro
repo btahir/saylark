@@ -346,7 +346,7 @@ const faqs = [
         <a class="opt" href="#return">Return sends</a>
         <a class="opt" href="#install">Install</a>
         <a class="opt" href="#faq">FAQ</a>
-        <a href={repo}>GitHub</a>
+        <a href={repo} data-umami-event="github" data-umami-event-place="nav">GitHub</a>
       </nav>
     </header>
 
@@ -365,7 +365,7 @@ const faqs = [
             Download for Mac
           </a>
           <p class="meta"><span class="nb">Free, MIT licensed</span> <span aria-hidden="true">·</span> <span class="nb">Apple Silicon, macOS 26+</span> <span aria-hidden="true">·</span> <span class="nb">~600 MB model downloads once</span></p>
-          <a class="ghost" href={repo} data-umami-event="github">
+          <a class="ghost" href={repo} data-umami-event="github" data-umami-event-place="hero">
             <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
             View on GitHub
           </a>
@@ -582,7 +582,7 @@ saylark dict list</code></pre>
           </div>
           <div class="faq">
             {faqs.map((f) => (
-              <details>
+              <details data-faq={f.q}>
                 <summary>{f.q}</summary>
                 <p>{f.a}</p>
               </details>
@@ -618,9 +618,9 @@ saylark dict list</code></pre>
       <div class="row">
         <span>Saylark · MIT licence</span>
         <nav aria-label="Footer">
-          <a href={repo}>GitHub</a>
-          <a href={`${repo}/blob/main/LICENSE`}>Licence</a>
-          <a href={`${repo}/issues`}>Report a problem</a>
+          <a href={repo} data-umami-event="github" data-umami-event-place="footer">GitHub</a>
+          <a href={`${repo}/blob/main/LICENSE`} data-umami-event="license">Licence</a>
+          <a href={`${repo}/issues`} data-umami-event="report-problem">Report a problem</a>
         </nav>
       </div>
       <p class="small">
@@ -631,6 +631,30 @@ saylark dict list</code></pre>
     </footer>
 
     <script is:inline>
+      // Analytics: FAQ opens, how far people read, and copy of install text. Umami only, no cookies.
+      (function () {
+        var track = function (name, data) { if (window.umami) window.umami.track(name, data); };
+        document.querySelectorAll('details[data-faq]').forEach(function (d) {
+          d.addEventListener('toggle', function () {
+            if (d.open) track('faq-open', { q: d.dataset.faq.slice(0, 80) });
+          });
+        });
+        if ('IntersectionObserver' in window) {
+          var seen = {};
+          var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+              var id = e.target.id;
+              if (e.isIntersecting && !seen[id]) { seen[id] = 1; track('section-view', { section: id }); io.unobserve(e.target); }
+            });
+          }, { threshold: 0.4 });
+          document.querySelectorAll('main section[id]').forEach(function (s) { io.observe(s); });
+        }
+        document.addEventListener('copy', function () {
+          var t = String(window.getSelection() || '').slice(0, 60);
+          if (t) track('copy-text', { text: t });
+        });
+      })();
+
       // Respect Reduce Motion: stop the looping clips and show their controls instead.
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         document.querySelectorAll('video.motion').forEach(function (v) { v.removeAttribute('autoplay'); v.pause(); v.controls = true; });
