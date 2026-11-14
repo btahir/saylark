@@ -1,0 +1,640 @@
+---
+const site = 'https://saylark.shiptiffin.app';
+const url = `${site}/`;
+const title = 'Saylark: free Mac dictation for talking to coding agents';
+const description =
+  'Free, open-source dictation for Mac. Speech recognition runs on your Mac. Press Return mid-take to send to Claude, Codex or ChatGPT. No account.';
+const dmg = 'https://github.com/btahir/saylark/releases/latest/download/Saylark.dmg';
+const repo = 'https://github.com/btahir/saylark';
+const ogImage = `${site}/og.jpg`;
+const ogAlt = 'The Saylark app icon, an origami bird, beside the name Saylark, the line "Hold a key. Talk. Return sends." and "Free, open-source dictation for Mac."';
+const umamiId = '8b8f3285-9fe3-4545-95b5-7d96d6128a67';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'Saylark',
+  description,
+  url,
+  image: ogImage,
+  applicationCategory: 'UtilitiesApplication',
+  operatingSystem: 'macOS 26 or later (Apple Silicon)',
+  downloadUrl: dmg,
+  softwareRequirements: 'Apple Silicon Mac, macOS 26 or later',
+  license: 'https://opensource.org/licenses/MIT',
+  isAccessibleForFree: true,
+  codeRepository: repo,
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+};
+
+const faqs = [
+  {
+    q: 'How is this different from other local dictation apps?',
+    a: 'Four things. Return sends: in the Claude, Codex and ChatGPT apps (or any app you add), press Return mid-take and Saylark stops, pastes and sends. Literal text: there is no AI rewriting step; Saylark removes fillers like um and uh and stutter repeats, and types everything else as you said it. Takes are never lost: audio is written to disk while you talk, and cancelled or failed takes can be recovered from Home. The dictionary is a plain text file with a small command line tool, so your own agent can keep it up to date.',
+  },
+  {
+    q: 'Is it really free?',
+    a: 'Yes. Saylark is open source under the MIT licence. There is no account, no subscription, no trial and no paid tier.',
+  },
+  {
+    q: 'Does anything I say leave my Mac?',
+    a: 'No. Speech recognition runs on your Mac, on the Neural Engine. Your audio, your text and your dictionary stay in your user folder. The app uses the network only to download its speech models from Hugging Face: about 600 MB on first launch, plus a 100 MB spelling model once your dictionary has terms. The app has no telemetry. This website counts page visits with Umami, without cookies or personal data.',
+  },
+  {
+    q: 'Does Saylark rewrite or tidy up what I say?',
+    a: 'No. It removes fillers (um, uh, er, hmm) and stutter repeats like “the the”, turns “new line” and “new paragraph” into line breaks, and applies your dictionary. Everything else is the speech model’s transcript of your words, as you said them.',
+  },
+  {
+    q: 'Which Macs does it run on?',
+    a: 'Macs with Apple Silicon (M1 or later) running macOS 26 or later. The first launch downloads the speech model, about 600 MB.',
+  },
+  {
+    q: 'Can I use a key other than Fn?',
+    a: 'Yes. In Settings you can choose Fn, Right Option or Right Command. Hold it to talk, or double-tap it for hands-free and tap again to stop. Esc cancels.',
+  },
+  {
+    q: 'What if I start talking with no text field selected?',
+    a: 'Your words are copied and a small card appears. Press ⌘V anywhere, or choose "Paste when I click a field" and click where the text should go.',
+  },
+  {
+    q: 'Why does it need Accessibility and Input Monitoring?',
+    a: 'Input Monitoring lets Saylark notice when you hold the trigger key. Accessibility lets it paste at your cursor and press Return for you. Microphone is for your voice. macOS also asks whether Saylark may paste from other apps: choose Always Allow, because Saylark reads the clipboard only to put your own contents back after it pastes.',
+  },
+  {
+    q: 'I use another dictation app. Will they clash?',
+    a: 'If both listen to Fn, both will paste. Quit the other app, or pick a different trigger key in Saylark’s Settings.',
+  },
+  {
+    q: 'Which languages does it understand?',
+    a: 'Saylark is tuned for English today.',
+  },
+];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={url} />
+    <meta name="robots" content="index, follow" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#faf8f5" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#141312" media="(prefers-color-scheme: dark)" />
+
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
+    <link rel="icon" href="/icon-512.png" type="image/png" sizes="512x512" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Saylark" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content={url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:secure_url" content={ogImage} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={ogAlt} />
+
+    <link rel="preload" as="image" href="/media/dictate-poster.webp" fetchpriority="high" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <script
+      defer
+      src="https://project-analytics.shiptiffin.app/script.js"
+      data-website-id={umamiId}
+      data-domains="saylark.shiptiffin.app"
+      data-exclude-search="true"
+    ></script>
+
+    <style is:global>
+      :root {
+        --bg: #faf8f5;
+        --bg-2: #f3efe9;
+        --surface: #ffffff;
+        --ink: #1d1b1a;
+        --ink-2: #4a4541;
+        --muted: #6b645e;
+        --line: #e6e0d8;
+        --accent: #b9471f;
+        --accent-ink: #ffffff;
+        --accent-soft: #fbe9e0;
+        --code-bg: #f3efe9;
+        --shadow: 0 1px 2px rgb(40 30 20 / 6%), 0 12px 40px -12px rgb(40 30 20 / 22%);
+        --radius: 14px;
+        --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", system-ui, sans-serif;
+        --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+        color-scheme: light dark;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #141312;
+          --bg-2: #1b1918;
+          --surface: #1f1d1c;
+          --ink: #f3efea;
+          --ink-2: #d4cdc6;
+          --muted: #a59d96;
+          --line: #2f2c2a;
+          --accent: #f2804f;
+          --accent-ink: #1a0d07;
+          --accent-soft: #3a2117;
+          --code-bg: #1b1918;
+          --shadow: 0 1px 2px rgb(0 0 0 / 40%), 0 16px 48px -12px rgb(0 0 0 / 60%);
+        }
+      }
+      *, *::before, *::after { box-sizing: border-box; }
+      html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+      @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: var(--font);
+        font-size: 17px;
+        line-height: 1.55;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+      }
+      img, video { max-width: 100%; height: auto; display: block; }
+      a { color: var(--accent); text-underline-offset: 3px; }
+      a:hover { text-decoration-thickness: 2px; }
+      :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+      .skip { position: absolute; left: -999px; top: 8px; background: var(--surface); padding: 8px 14px; border-radius: 8px; z-index: 10; }
+      .skip:focus { left: 16px; }
+      .wrap { width: 100%; max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+      .narrow { max-width: 760px; }
+      h1, h2, h3 { letter-spacing: -0.02em; line-height: 1.12; margin: 0; }
+      h2 { font-size: clamp(28px, 4vw, 40px); font-weight: 700; }
+      h3 { font-size: 19px; font-weight: 650; letter-spacing: -0.01em; }
+      p { margin: 0; }
+      .eyebrow { font-size: 14px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+      .lede { font-size: 19px; color: var(--ink-2); margin-top: 14px; max-width: 620px; }
+      kbd {
+        font-family: var(--font); font-size: 0.85em; font-weight: 600;
+        padding: 1px 7px; border-radius: 6px; border: 1px solid var(--line);
+        background: var(--surface); box-shadow: 0 1px 0 var(--line); white-space: nowrap;
+      }
+      code { font-family: var(--mono); font-size: 0.88em; background: var(--code-bg); padding: 1px 6px; border-radius: 5px; }
+      pre code { font-size: inherit; background: none; padding: 0; border-radius: 0; }
+
+      /* Header */
+      .top { display: flex; align-items: center; justify-content: space-between; padding-top: 18px; padding-bottom: 18px; gap: 16px; }
+      .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; font-weight: 700; font-size: 18px; letter-spacing: -0.01em; }
+      .brand img { width: 32px; height: 32px; }
+      .top nav { display: flex; gap: 22px; font-size: 15px; }
+      .top nav a { color: var(--ink-2); text-decoration: none; }
+      .top nav a:hover { color: var(--ink); }
+      @media (max-width: 640px) { .top nav .opt { display: none; } }
+
+      /* Hero */
+      .hero { text-align: center; padding-top: 48px; padding-bottom: 24px; }
+      .hero-icon { width: 128px; height: 128px; margin: 0 auto 22px; filter: drop-shadow(0 10px 24px rgb(40 25 15 / 22%)); }
+      .hero h1 { font-size: clamp(38px, 6.4vw, 64px); font-weight: 750; letter-spacing: -0.035em; max-width: 820px; margin: 0 auto; }
+      .hero .lede { margin: 18px auto 0; font-size: clamp(18px, 2.2vw, 21px); }
+      .cta { margin-top: 32px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+      .btn {
+        display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+        min-height: 54px; padding: 0 28px; border-radius: 999px;
+        font-size: 18px; font-weight: 650; text-decoration: none; transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+      }
+      .btn-primary { background: var(--accent); color: var(--accent-ink); box-shadow: 0 8px 24px -8px color-mix(in srgb, var(--accent) 70%, transparent); }
+      .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 12px 28px -8px color-mix(in srgb, var(--accent) 80%, transparent); }
+      .btn-primary svg { width: 20px; height: 20px; }
+      .meta { font-size: 14.5px; color: var(--muted); }
+      .meta .nb { white-space: nowrap; }
+      .meta span[aria-hidden] { margin: 0 2px; }
+      .ghost { font-size: 16px; font-weight: 600; color: var(--ink-2); text-decoration: none; display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 10px; }
+      .ghost:hover { color: var(--ink); background: var(--bg-2); }
+      .ghost svg { width: 18px; height: 18px; }
+      @media (prefers-reduced-motion: reduce) { .btn { transition: none; } .btn-primary:hover { transform: none; } }
+
+      .stage { margin: 48px auto 0; max-width: 1000px; }
+      .frame {
+        border-radius: var(--radius); overflow: hidden; background: var(--surface);
+        box-shadow: var(--shadow); border: 1px solid var(--line);
+      }
+      .frame video, .frame img { width: 100%; }
+      .caption { font-size: 14.5px; color: var(--muted); text-align: center; margin-top: 14px; }
+
+      /* Sections */
+      section { padding: 88px 0 0; }
+      .section-head { max-width: 680px; margin-bottom: 36px; }
+      .center { text-align: center; margin-left: auto; margin-right: auto; }
+      .center .lede { margin-left: auto; margin-right: auto; }
+
+      .steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; counter-reset: step; }
+      .steps li { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; }
+      .steps li::before {
+        counter-increment: step; content: counter(step);
+        display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 50%;
+        background: var(--accent-soft); color: var(--accent); font-weight: 700; font-size: 15px; margin-bottom: 14px;
+      }
+      .steps p { color: var(--ink-2); margin-top: 6px; font-size: 16px; }
+      @media (max-width: 760px) { .steps { grid-template-columns: 1fr; } }
+
+      .tips { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 16px; }
+      .tip { padding: 18px 20px; border-radius: var(--radius); background: var(--bg-2); font-size: 15.5px; color: var(--ink-2); }
+      .tip strong { color: var(--ink); display: block; margin-bottom: 2px; }
+      @media (max-width: 760px) { .tips { grid-template-columns: 1fr; } }
+
+      .split { display: grid; grid-template-columns: 1fr 1.25fr; gap: 48px; align-items: center; }
+      .split.flip { grid-template-columns: 1.25fr 1fr; }
+      .split.flip .copy { order: 2; }
+      .split > *, .install > *, .steps > *, .tips > *, .grid3 > * { min-width: 0; }
+      @media (max-width: 860px) { .split, .split.flip { grid-template-columns: 1fr; gap: 28px; } .split.flip .copy { order: 0; } }
+      .copy p + p { margin-top: 14px; }
+      .copy .lede { margin-top: 14px; }
+      .checks { list-style: none; padding: 0; margin: 22px 0 0; display: grid; gap: 12px; }
+      .checks li { display: grid; grid-template-columns: 22px 1fr; gap: 10px; color: var(--ink-2); font-size: 16.5px; }
+      .checks li::before {
+        content: ""; width: 20px; height: 20px; margin-top: 3px; border-radius: 50%;
+        background: var(--accent-soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 10.5l3 3 6-7' fill='none' stroke='%23d0602f' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat;
+      }
+      .checks strong { color: var(--ink); font-weight: 600; }
+
+      .privacy { background: var(--bg-2); border-radius: 24px; padding: 56px 48px; }
+      @media (max-width: 640px) { .privacy { padding: 36px 22px; border-radius: 18px; } }
+      .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 36px; }
+      .grid3 p { color: var(--ink-2); font-size: 16px; margin-top: 6px; }
+      @media (max-width: 760px) { .grid3 { grid-template-columns: 1fr; gap: 22px; } }
+      .icon-dot { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--surface); border: 1px solid var(--line); margin-bottom: 14px; color: var(--accent); }
+      .icon-dot svg { width: 22px; height: 22px; }
+
+      pre {
+        margin: 0; font-family: var(--mono); font-size: 14.5px; line-height: 1.7;
+        background: var(--code-bg); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; overflow-x: auto; color: var(--ink-2);
+      }
+      pre .c { color: var(--muted); }
+      pre .t { color: var(--ink); font-weight: 600; }
+      pre.wrapline { white-space: pre-wrap; overflow-wrap: anywhere; }
+      .dict-note { font-size: 15px; color: var(--muted); margin-top: 12px; }
+      .snippet-label { font-size: 13.5px; color: var(--muted); margin: 22px 0 8px; }
+      blockquote { margin: 18px 0 0; padding: 16px 20px; border-left: 3px solid var(--accent); background: var(--surface); border-radius: 0 12px 12px 0; font-size: 15.5px; color: var(--ink-2); }
+
+      .apps { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+      .apps span { font-size: 14px; font-weight: 600; padding: 5px 12px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); color: var(--ink-2); }
+
+      .install { display: grid; grid-template-columns: 1fr 1.4fr; gap: 40px; align-items: start; }
+      @media (max-width: 860px) { .install { grid-template-columns: 1fr; gap: 28px; } }
+      .req { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; }
+      .req dl { margin: 14px 0 0; display: grid; gap: 12px; }
+      .req dt { font-size: 13.5px; color: var(--muted); }
+      .req dd { margin: 2px 0 0; font-weight: 600; }
+      .numbered { margin: 0; padding: 0; list-style: none; counter-reset: n; display: grid; gap: 18px; }
+      .numbered li { display: grid; grid-template-columns: 34px 1fr; gap: 12px; color: var(--ink-2); }
+      .numbered li::before {
+        counter-increment: n; content: counter(n);
+        width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center;
+        background: var(--ink); color: var(--bg); font-weight: 700; font-size: 14px;
+      }
+      .numbered strong { color: var(--ink); }
+      .perm { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+      .perm span { font-size: 14px; font-weight: 600; padding: 4px 11px; border-radius: 8px; background: var(--accent-soft); color: var(--ink); }
+
+      .faq { border-top: 1px solid var(--line); }
+      .faq details { border-bottom: 1px solid var(--line); }
+      .faq summary {
+        cursor: pointer; list-style: none; padding: 20px 36px 20px 0; position: relative;
+        font-weight: 600; font-size: 17.5px;
+      }
+      .faq summary::-webkit-details-marker { display: none; }
+      .faq summary::after {
+        content: ""; position: absolute; right: 6px; top: 50%; width: 10px; height: 10px; margin-top: -7px;
+        border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted); transform: rotate(45deg); transition: transform .2s ease;
+      }
+      .faq details[open] summary::after { transform: rotate(225deg); margin-top: -2px; }
+      .faq details p { padding: 0 0 22px; color: var(--ink-2); max-width: 680px; }
+      @media (prefers-reduced-motion: reduce) { .faq summary::after { transition: none; } }
+
+      .final { text-align: center; padding-top: 96px; }
+      .final img { width: 88px; height: 88px; margin: 0 auto 18px; }
+
+      .sponsor {
+        margin-top: 96px; display: flex; align-items: center; justify-content: center; gap: 12px;
+        padding: 18px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+        font-size: 15px; color: var(--muted);
+      }
+      .sponsor a { display: inline-flex; align-items: center; gap: 8px; color: var(--ink); font-weight: 600; text-decoration: none; }
+      .sponsor a:hover { text-decoration: underline; }
+      .sponsor img { width: 26px; height: 26px; }
+
+      footer { padding-top: 28px; padding-bottom: 48px; font-size: 14.5px; color: var(--muted); }
+      footer .row { display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: space-between; align-items: center; }
+      footer nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+      footer a { color: var(--ink-2); }
+      footer .small { margin-top: 14px; font-size: 13.5px; }
+    </style>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="wrap top">
+      <a class="brand" href="/" aria-label="Saylark home">
+        <img src="/media/app-icon.webp" alt="" width="32" height="32" />
+        Saylark
+      </a>
+      <nav aria-label="Page">
+        <a class="opt" href="#how">How it works</a>
+        <a class="opt" href="#return">Return sends</a>
+        <a class="opt" href="#install">Install</a>
+        <a class="opt" href="#faq">FAQ</a>
+        <a href={repo}>GitHub</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <div class="wrap hero">
+        <img class="hero-icon" src="/media/app-icon.webp" alt="Saylark app icon: a cream origami bird with an orange breast" width="128" height="128" />
+        <h1>Dictation that sends the message.</h1>
+        <p class="lede">
+          Hold <kbd>fn</kbd>, talk, let go. Your words land at the cursor, exactly as you said them. In Claude, Codex or
+          ChatGPT, press <kbd>return</kbd> mid-take and Saylark sends it. Free, open source, and the speech recognition
+          runs on your Mac.
+        </p>
+        <div class="cta">
+          <a class="btn btn-primary" href={dmg} data-umami-event="download" data-umami-event-place="hero">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v10m0 0l-4-4m4 4l4-4M4 16h12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Download for Mac
+          </a>
+          <p class="meta"><span class="nb">Free, MIT licensed</span> <span aria-hidden="true">·</span> <span class="nb">Apple Silicon, macOS 26+</span> <span aria-hidden="true">·</span> <span class="nb">~600 MB model downloads once</span></p>
+          <a class="ghost" href={repo} data-umami-event="github">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            View on GitHub
+          </a>
+        </div>
+
+        <figure class="stage">
+          <div class="frame">
+            <video class="motion" autoplay muted loop playsinline preload="metadata" width="1200" height="750"
+              poster="/media/dictate-poster.webp"
+              aria-label="Saylark in use: holding Fn over a chat app shows a small dark pill at the bottom of the screen with an orange voice meter, and the words appear in it as they are spoken.">
+              <source src="/media/dictate.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <figcaption class="caption">While you hold the key, a small pill shows your voice. Let go and the text lands in the box.</figcaption>
+        </figure>
+      </div>
+
+      <section id="how" aria-labelledby="how-title">
+        <div class="wrap">
+          <div class="section-head center">
+            <p class="eyebrow">How it works</p>
+            <h2 id="how-title">Hold, talk, release.</h2>
+            <p class="lede">No window to open and no button to click. It works in any app with a text field.</p>
+          </div>
+          <ol class="steps">
+            <li><h3>Hold <kbd>fn</kbd></h3><p>Or Right Option, or Right Command. A small pill appears at the bottom of the screen.</p></li>
+            <li><h3>Talk</h3><p>Say it the way you would say it to a person. The pill moves with your voice.</p></li>
+            <li><h3>Let go</h3><p>Your words are pasted at the cursor, and your clipboard is put back the way it was.</p></li>
+          </ol>
+          <div class="tips">
+            <p class="tip"><strong>Hands-free</strong>Double-tap the key for a long take, then tap once to stop.</p>
+            <p class="tip"><strong>Return sends</strong>Press <kbd>return</kbd> mid-take to stop, paste and send in one go.</p>
+            <p class="tip"><strong>Changed your mind?</strong><kbd>esc</kbd> cancels. The take is kept in case you want it later.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="return" aria-labelledby="return-title">
+        <div class="wrap narrow">
+          <p class="eyebrow">Return sends</p>
+          <h2 id="return-title">Press Return and it sends.</h2>
+          <p class="lede">
+            Talking to a coding agent? Say the whole prompt, then press <kbd>return</kbd> before you let go. Saylark stops
+            recording, pastes your words into the chat box and presses Return for you. One take, one message.
+          </p>
+          <ul class="checks">
+            <li><span><strong>On by default in three apps.</strong> The Claude, Codex and ChatGPT desktop apps. Add any other app in Settings, or turn it on everywhere.</span></li>
+            <li><span><strong>Hands-free for long prompts.</strong> Double-tap the key and talk for as long as you need, then press <kbd>return</kbd> to send.</span></li>
+            <li><span><strong>Changed your mind?</strong> <kbd>esc</kbd> cancels instead. Nothing is pasted, and the take is kept in case you want it later.</span></li>
+          </ul>
+          <div class="apps" aria-label="Return sends is on by default in">
+            <span>Claude</span><span>Codex</span><span>ChatGPT</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="literal" aria-labelledby="literal-title">
+        <div class="wrap narrow">
+          <p class="eyebrow">Literal text</p>
+          <h2 id="literal-title">Your exact words.</h2>
+          <p class="lede">
+            Saylark has no AI step that rewrites, summarises or polishes what you said. When you are giving instructions
+            to an agent, a rewrite you didn’t ask for can change what you meant, so the text is your words as spoken.
+          </p>
+          <p class="snippet-label">You say</p>
+<pre class="wrapline"><code>Um, so the the login test fails on Safari new line check the auth middleware first</code></pre>
+          <p class="snippet-label">Saylark types</p>
+<pre><code><span class="t">So the login test fails on Safari
+Check the auth middleware first.</span></code></pre>
+          <ul class="checks">
+            <li><span><strong>Removed:</strong> fillers like um, uh, er and hmm, and stutter repeats like “the the”.</span></li>
+            <li><span><strong>Spoken commands:</strong> “new line” and “new paragraph” become line breaks.</span></li>
+            <li><span><strong>Left alone:</strong> everything else, including numbers, units, file names and identifiers. Your dictionary fixes the spelling of names.</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <section aria-labelledby="card-title">
+        <div class="wrap split">
+          <div class="copy">
+            <p class="eyebrow">Never lose a take</p>
+            <h2 id="card-title">Audio is saved while you talk.</h2>
+            <p class="lede">
+              Saylark writes your audio to disk as you speak, so a long take survives a crash. If a take is cancelled or
+              fails, it is still there to recover.
+            </p>
+            <ul class="checks">
+              <li><span><strong>Cancelled and failed takes stay.</strong> Paste them or transcribe them again from Home.</span></li>
+              <li><span><strong>No text field? A card holds your words.</strong> They are already copied, so press <kbd>⌘V</kbd> anywhere, or choose “Paste when I click a field”.</span></li>
+              <li><span><strong>Every take in one place.</strong> Copy, paste again or play back what you said. Audio is kept 30 days by default; you can change that.</span></li>
+            </ul>
+          </div>
+          <div class="frame">
+            <video class="motion" autoplay muted loop playsinline preload="metadata" width="900" height="500"
+              poster="/media/card-poster.webp"
+              aria-label="With no text field focused, Saylark shows a dark card with the dictated text, a note that it was copied, and buttons for Dismiss and Paste when I click a field.">
+              <source src="/media/card.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+      </section>
+
+      <section id="dictionary" aria-labelledby="dict-title">
+        <div class="wrap split flip">
+          <div class="copy">
+            <p class="eyebrow">Your dictionary</p>
+            <h2 id="dict-title">A dictionary that’s just a text file.</h2>
+            <p class="lede">
+              Teach Saylark the names, products and jargon you say every day. They live in one plain text file: edit it
+              on the Dictionary tab, in any editor, or from the command line. Changes apply within a second.
+            </p>
+            <p class="snippet-label">dictionary.txt</p>
+<pre><code><span class="c"># A term on its own: spell it this way.</span>
+<span class="t">kubectl</span>
+<span class="c"># Or list what the model writes instead.</span>
+<span class="t">PostgreSQL:</span> post gress
+<span class="t">Next.js:</span> next just</code></pre>
+            <p class="snippet-label">Or let your own agent keep it current</p>
+<pre><code>saylark dict add Supabase --as "super base"
+saylark dict list</code></pre>
+            <p class="dict-note">For example, a daily agent job that adds the new names from your commit messages. Saylark itself never reads your messages.</p>
+          </div>
+          <div class="frame">
+            <picture>
+              <source srcset="/media/main-dictionary-dark.webp" media="(prefers-color-scheme: dark)" />
+              <img src="/media/main-dictionary-light.webp" width="1200" height="967" loading="lazy" decoding="async"
+                alt="The Dictionary tab: a list of terms such as Claude Code, GitHub, Next.js, Supabase and Tailwind, each with the wrong spellings it replaces, like cloud code or next just." />
+            </picture>
+          </div>
+        </div>
+      </section>
+
+      <section id="private" aria-labelledby="private-title">
+        <div class="wrap">
+          <div class="privacy">
+            <div class="section-head" style="margin-bottom:0">
+              <p class="eyebrow">Privacy</p>
+              <h2 id="private-title">What leaves your Mac: model downloads, nothing else.</h2>
+              <p class="lede">Saylark recognises speech on your Mac’s Neural Engine with Parakeet, an open speech model. The app’s only network use is downloading that model once from Hugging Face (about 600 MB), plus a small 100 MB spelling model if you use the dictionary. There is no Saylark server, no account and no telemetry in the app.</p>
+            </div>
+            <div class="grid3">
+              <div>
+                <div class="icon-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 10V7.5a4 4 0 018 0V10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+                <h3>Your words aren’t sent anywhere</h3>
+                <p>Audio, text and history live in your user folder. Once the model is downloaded, dictation works with Wi-Fi off.</p>
+              </div>
+              <div>
+                <div class="icon-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="3.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5.5 19.5c1.2-3.2 3.7-4.8 6.5-4.8s5.3 1.6 6.5 4.8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M4 4l16 16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+                <h3>No account, no subscription</h3>
+                <p>Download it and use it. No sign-up, no word limits, no paid tier.</p>
+              </div>
+              <div>
+                <div class="icon-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 7L3.5 12l5 5M15.5 7l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <h3>Open source</h3>
+                <p>MIT licensed. Read the code, build it yourself, change what you like.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="home-title">
+        <div class="wrap">
+          <div class="section-head center">
+            <p class="eyebrow">The Saylark window</p>
+            <h2 id="home-title">Your takes, your words, your settings.</h2>
+            <p class="lede">Home lists what you said, with words today and this week. Open it from the menu bar whenever you want it, and it stays out of the Dock the rest of the time.</p>
+          </div>
+          <div class="frame stage" style="margin-top:0">
+            <picture>
+              <source srcset="/media/main-home-dark.webp" media="(prefers-color-scheme: dark)" />
+              <img src="/media/main-home-light.webp" width="1410" height="960" loading="lazy" decoding="async"
+                alt="The Saylark window on Home: words today, this week and median time to text across the top, then a list of takes grouped by day, each with the app it went to, its time and length, and a Recover or Transcribe again button on takes that did not go in." />
+            </picture>
+          </div>
+        </div>
+      </section>
+
+      <section id="install" aria-labelledby="install-title">
+        <div class="wrap">
+          <div class="section-head">
+            <p class="eyebrow">Install</p>
+            <h2 id="install-title">Drag to Applications, grant four permissions, talk.</h2>
+          </div>
+          <div class="install">
+            <div class="req">
+              <h3>Requirements</h3>
+              <dl>
+                <div><dt>Mac</dt><dd>Apple Silicon (M1 or later)</dd></div>
+                <div><dt>System</dt><dd>macOS 26 or later</dd></div>
+                <div><dt>First launch</dt><dd>Downloads the speech model once from Hugging Face, about 600 MB</dd></div>
+                <div><dt>Price</dt><dd>Free, MIT licensed</dd></div>
+              </dl>
+            </div>
+            <ol class="numbered">
+              <li><span><strong>Download Saylark.dmg</strong> and open it.</span></li>
+              <li><span><strong>Drag Saylark to Applications</strong>, then open it from there.</span></li>
+              <li>
+                <span><strong>Grant four permissions.</strong> A short setup walks you through each one and says why.
+                  <span class="perm"><span>Microphone</span><span>Input Monitoring</span><span>Accessibility</span><span>Paste from Other Apps</span></span>
+                </span>
+              </li>
+              <li><span><strong>Try it.</strong> Hold <kbd>fn</kbd> and say something in the practice field. When macOS asks about pasting from other apps, choose “Always Allow”: Saylark reads the clipboard only to put your own contents back after a paste.</span></li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section id="faq" aria-labelledby="faq-title">
+        <div class="wrap narrow">
+          <div class="section-head">
+            <p class="eyebrow">FAQ</p>
+            <h2 id="faq-title">Questions</h2>
+          </div>
+          <div class="faq">
+            {faqs.map((f) => (
+              <details>
+                <summary>{f.q}</summary>
+                <p>{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <div class="wrap final">
+        <img src="/media/app-icon.webp" alt="" width="88" height="88" loading="lazy" />
+        <h2>Say it. Saylark types it.</h2>
+        <div class="cta">
+          <a class="btn btn-primary" href={dmg} data-umami-event="download" data-umami-event-place="footer">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v10m0 0l-4-4m4 4l4-4M4 16h12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Download for Mac
+          </a>
+          <p class="meta"><span class="nb">Free, MIT licensed</span> <span aria-hidden="true">·</span> <span class="nb">Apple Silicon, macOS 26+</span> <span aria-hidden="true">·</span> <span class="nb">~600 MB model downloads once</span></p>
+        </div>
+      </div>
+    </main>
+
+    <div class="wrap">
+      <p class="sponsor">
+        Sponsored by
+        <a href="https://shiptiffin.app" data-umami-event="sponsor">
+          <img src="/media/shiptiffin.svg" alt="" width="26" height="26" />
+          ShipTiffin
+        </a>
+      </p>
+    </div>
+
+    <footer class="wrap">
+      <div class="row">
+        <span>Saylark · MIT licence</span>
+        <nav aria-label="Footer">
+          <a href={repo}>GitHub</a>
+          <a href={`${repo}/blob/main/LICENSE`}>Licence</a>
+          <a href={`${repo}/issues`}>Report a problem</a>
+        </nav>
+      </div>
+      <p class="small">
+        The Saylark app sends nothing except its one-time model downloads and has no telemetry. This website counts
+        visits with Umami: no cookies, no personal data. Speech model: Parakeet TDT 0.6B (NVIDIA), post-trained as
+        Parakeet Ultra by Moondream, run with FluidAudio.
+      </p>
+    </footer>
+
+    <script is:inline>
+      // Respect Reduce Motion: stop the looping clips and show their controls instead.
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.querySelectorAll('video.motion').forEach(function (v) { v.removeAttribute('autoplay'); v.pause(); v.controls = true; });
+      }
+    </script>
+  </body>
+</html>

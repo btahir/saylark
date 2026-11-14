@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://saylark.shiptiffin.app/sitemap.xml

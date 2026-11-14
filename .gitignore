@@ -1,0 +1,30 @@
+# Build outputs
+.build/
+.build-*/
+.swiftpm/
+build/
+*.xcodeproj/
+xcuserdata/
+
+# Private notes, data and local config (never commit audio or transcripts)
+notes/
+launch/
+data/
+*.wav
+*.mp4
+*.mov
+.env
+.env.*
+
+.DS_Store
+
+# Local-only configuration and artifacts
+.DS_Store
+.env
+.env.*
+!.env.example
+!.env.sample
+.claude/
+.codex/
+.agents/
+*.log
